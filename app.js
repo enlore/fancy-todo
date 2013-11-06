@@ -39,6 +39,8 @@ app.get('/destroy/:id', routes.destroy)
 app.get('/edit/:id', routes.edit)
 app.post('/update/:id', routes.update)
 
-app.listen(port, function () {
-    console.log('** Listening on %s in %s mode', app.address, app.settings.env )
-})
+exports.start = function () {
+    app.listen(port, function () {
+        console.log('** Listening on %s in %s mode', app.address, app.settings.env )
+    })
+}
