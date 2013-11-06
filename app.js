@@ -1,7 +1,7 @@
 var express = require('express')
-    , app = express()
     , less_middleware = require('less-middleware')
     , path = require('path')
+    , app = express()
     , port = 9023
 
 app.set('view engine', 'jade')
