@@ -1,4 +1,5 @@
 var express = require('express')
+    , db = require('./db')
     , less_middleware = require('less-middleware')
     , path = require('path')
     , app = express()
@@ -16,10 +17,25 @@ app.use(less_middleware({
 }))
 
 app.use(express.static(path.join(__dirname, 'static')))
+app.use(express.logger())
+app.use(express.bodyParser())
+app.use( app.router )
 
-app.get('/', function (req, res) {
-    res.render('index')
+app.configure('development', function () {
+    app.use(express.errorHandler({
+        dumpExceptions  : true,
+        showStack       : true
+    }))
 })
 
-app.listen(port)
-console.log('** Listening on ' + port)
+app.configure('production', function () {
+    app.use(express.errorHandler())
+})
+
+var routes = require('./routes')
+
+app.get('/', routes.index)
+
+app.listen(port, function () {
+    console.log('** Listening on %s in %s mode', app.address, app.settings.env )
+})
