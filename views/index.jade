@@ -3,21 +3,24 @@ block body
   .container
     .row
       .col-sm-12
-        h1.align-center WTF R U Doin
-        h2.align-center um, this:
+        .page-header
+          h1.md-align-center WTF R U Doin
+            br
+            small.md-align-center um, this:
     .row
-      .col-sm-6.col-sm-push-6
+      .col-sm-6.col-xs-12
         form(action="/create", method="post", class="todo-form")
-          input(type="text", name="content")
-          input(type="submit", value="submit")
+          textarea(type="text", name="content")
+          br
+          input(class="btn btn-info", type="submit", value="New Todo")
 
-      .col-sm-6.col-sm-pull-6
+      .col-sm-6.col-xs-12
         if todos
-          ul
+          ul.todo-list
             -for item in todos
               li
-                p
-                  a(class="todo-item", href="/edit/" + item._id) #{item.content}  
-                  a(href='/destroy/' + item._id)
-                    button &times;
+                a(href='/destroy/' + item._id)
+                  button &times;
+                a(class="todo-item", href="/edit/" + item._id)
+                  p #{item.content}
 

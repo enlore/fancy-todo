@@ -1,22 +1,30 @@
 extends layouts/base
 block body
-  h1 wooo
-  if todos
-    ul
-      -for item in todos
-        li
-          if item._id == current
-            form(action="/update/" + item._id, method="post")
-              input(type="text", name="content", value="#{item.content}")
-              input(type="submit", value="submit")
-          else
-            p
-              a(class="todo-item", href="/edit/" + item._id) #{item.content}  
-              a(href='/destroy/' + item._id)
-                button &times;
+  .container
+    .row
+      .col-sm-12
+        .page-header
+          h1.md-align-center WTF R U Doin
+            br
+            small.md-align-center um, this:
+    .row
+      .col-sm-6.col-xs-12
+        form(action="/create", method="post", class="todo-form")
+          textarea(type="text", name="content")
+          br
+          input(class="btn btn-info", type="submit", value="New Todo")
 
-
-
-  form(action="/create", method="post", class="todo-form")
-    input(type="text", name="content")
-    input(type="submit", value="submit")
+      .col-sm-6.col-xs-12
+        if todos
+          ul.todo-list
+            -for item in todos
+              li
+                if item._id == current
+                  form(action="/update/" + item._id, method="post")
+                    textarea(type="text", name="content") #{item.content}
+                    input(type="submit", value="Save")
+                else
+                  a(href='/destroy/' + item._id)
+                    button &times;
+                  a(class="todo-item", href="/edit/" + item._id)
+                    p #{item.content}
