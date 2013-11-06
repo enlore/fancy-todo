@@ -9,7 +9,7 @@ app.set('view engine', 'jade')
 app.set('views', path.join(__dirname, 'views'))
 app.use(less_middleware({
     src: path.join(__dirname, 'static'),
-    compress: false,
+    compress: true,
     debug: false,
     prefix: 'css',
     paths: [path.join(__dirname, 'static')]
