@@ -30,3 +30,26 @@ exports.destroy = function (req, res) {
         })
     })
 }
+
+exports.edit = function (req, res) {
+    Todo.find(function (err, todos, count) {
+        if (err) console.log(err)
+        else {
+            res.render('edit', {
+                todos   : todos,
+                current : req.params.id
+            })
+        }
+    })
+}
+
+exports.update = function (req, res) {
+    Todo.findById(req.params.id, function(err, todo) {
+        todo.content = req.body.content
+        todo.updated_at = new Date()
+        todo.save(function (err, todo) {
+            console.log('----\nsaved %s\n----', todo._id)
+            res.redirect('/')
+        })
+    })
+}

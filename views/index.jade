@@ -5,13 +5,10 @@ block body
     ul
       -for item in todos
         li
-          p #{item.content} 
-            a(href='/destroy/' + item._id) &times;
-
-  if snacks
-    ul
-      -for snack in snacks
-        li #{snack}
+          p
+            a(class="todo-item", href="/edit/" + item._id) #{item.content}  
+            a(href='/destroy/' + item._id)
+              button &times;
 
   form(action="/create", method="post", class="todo-form")
     input(type="text", name="content")

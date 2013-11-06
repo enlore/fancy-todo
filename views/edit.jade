@@ -1,0 +1,22 @@
+extends layouts/base
+block body
+  h1 wooo
+  if todos
+    ul
+      -for item in todos
+        li
+          if item._id == current
+            form(action="/update/" + item._id, method="post")
+              input(type="text", name="content", value="#{item.content}")
+              input(type="submit", value="submit")
+          else
+            p
+              a(class="todo-item", href="/edit/" + item._id) #{item.content}  
+              a(href='/destroy/' + item._id)
+                button &times;
+
+
+
+  form(action="/create", method="post", class="todo-form")
+    input(type="text", name="content")
+    input(type="submit", value="submit")
