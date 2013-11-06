@@ -17,6 +17,7 @@ app.use(less_middleware({
 
 app.use(express.static(path.join(__dirname, 'static')))
 app.use(express.logger())
+app.use(express.cookieParser())
 app.use(express.bodyParser())
 app.use( app.router )
 
