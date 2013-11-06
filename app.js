@@ -35,6 +35,7 @@ app.configure('production', function () {
 var routes = require('./routes')
 
 app.get('/', routes.index)
+app.post('/create', routes.create)
 
 app.listen(port, function () {
     console.log('** Listening on %s in %s mode', app.address, app.settings.env )
