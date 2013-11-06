@@ -1,6 +1,6 @@
 {
-  "name": "todo",
-  "version": "0.0.0",
+  "name": "fancy-todo",
+  "version": "1.0.0",
   "description": "http://dreamerslab.com/blog/en/write-a-todo-list-with-express-and-mongodb/",
   "main": "index.js",
   "dependencies": {
