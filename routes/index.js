@@ -26,6 +26,9 @@ exports.create = function (req, res, next) {
 
 exports.destroy = function (req, res) {
     Todo.findById(req.params.id, function (err, todo) {
+        if (todo.u_id !== req.cookies.u_id)
+            return utils.forbidden(res)
+
         todo.remove(function (err, todo) {
             if (err) console.log(err)
             else {
