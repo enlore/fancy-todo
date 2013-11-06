@@ -58,13 +58,19 @@ exports.edit = function (req, res, next) {
     })
 }
 
-exports.update = function (req, res) {
+exports.update = function (req, res, next) {
     Todo.findById(req.params.id, function(err, todo) {
+        if (todo.u_id !== req.cookies.u_id)
+            res.redirect('/')
+
         todo.content = req.body.content
         todo.updated_at = new Date()
         todo.save(function (err, todo) {
-            console.log('---- saved %s', todo._id)
-            res.redirect('/')
+            if (err) return next(err)
+            else {
+                console.log('---- updated %s', todo._id)
+                res.redirect('/')
+            }
         })
     })
 }
