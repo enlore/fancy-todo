@@ -1,20 +1,25 @@
 var mongoose = require('mongoose')
     , Todo = mongoose.model('Todo')
+    , utils = require('connect').utils
 
-exports.index = function(req, res) {
-    Todo.find(function (err, todos, count) {
-        res.render('index', {
-            todos: todos
+exports.index = function(req, res, next) {
+    // find all todos by user id
+    Todo.find({u_id: req.cookies.u_id}).
+        sort('-updated_at').
+        exec(function (err, todos, count) {
+            if (err) next(err)
+            res.render('index', {todos: todos})
         })
-    })
-}
+    }
 
-exports.create = function (req, res) {
+exports.create = function (req, res, next) {
     new Todo({
+        u_id        : req.cookies.u_id,
         content     : req.body.content,
         updated_at  : new Date()
     }).save(function (err, todo, count) {
         console.log('----\nINFO: saved id: %s content: %s\n----\n', todo._id, todo.content)
+        if (err) return next(err)
         res.redirect('/')
     })
 }
