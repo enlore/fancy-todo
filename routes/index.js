@@ -1,6 +1,7 @@
-var mongoose = require('mongoose')
-    , Todo = mongoose.model('Todo')
-    , utils = require('connect').utils
+var mongoose    = require('mongoose')
+    , Todo      = mongoose.model('Todo')
+    , utils     = require('connect').utils
+    , uuid      = require('node-uuid')
 
 exports.index = function(req, res, next) {
     // find all todos by user id
@@ -8,6 +9,7 @@ exports.index = function(req, res, next) {
         sort('-updated_at').
         exec(function (err, todos, count) {
             if (err) next(err)
+            console.log('---- finding by cookie u_id: %s', req.cookies.u_id)
             res.render('index', {todos: todos})
         })
     }
@@ -18,36 +20,41 @@ exports.create = function (req, res, next) {
         content     : req.body.content,
         updated_at  : new Date()
     }).save(function (err, todo, count) {
-        console.log('----\nINFO: saved id: %s content: %s\n----\n', todo._id, todo.content)
+        console.log('---- INFO: saved id: %s u_id: %s', todo._id, todo.u_id)
         if (err) return next(err)
         res.redirect('/')
     })
 }
 
-exports.destroy = function (req, res) {
+exports.destroy = function (req, res, next) {
     Todo.findById(req.params.id, function (err, todo) {
-        if (todo.u_id !== req.cookies.u_id)
-            return utils.forbidden(res)
+        if (todo.u_id !== req.cookies.u_id) {
+            console.log('---- INFO: can\'t let you do that, staaarfooox\n' +
+                '      tried to delete %s with u_id %s', todo._id, todo.u_id)
+            res.redirect('/')
+        }
 
         todo.remove(function (err, todo) {
-            if (err) console.log(err)
+            if (err) return next(err)
             else {
-                console.log('----\nINFO: destroyed id: %s', todo._id)
+                console.log('---- INFO: destroyed id: %s', todo._id)
                 res.redirect('/')
             }
         })
     })
 }
 
-exports.edit = function (req, res) {
-    Todo.find(function (err, todos, count) {
-        if (err) console.log(err)
-        else {
-            res.render('edit', {
-                todos   : todos,
-                current : req.params.id
-            })
-        }
+exports.edit = function (req, res, next) {
+    Todo.find({u_id: req.cookies.u_id}).
+        sort('-updated_at').
+        exec(function (err, todos, count) {
+            if (err) return next(err)
+            else {
+                res.render('edit', {
+                    todos   : todos,
+                    current : req.params.id
+                })
+            }
     })
 }
 
@@ -56,8 +63,20 @@ exports.update = function (req, res) {
         todo.content = req.body.content
         todo.updated_at = new Date()
         todo.save(function (err, todo) {
-            console.log('----\nsaved %s\n----', todo._id)
+            console.log('---- saved %s', todo._id)
             res.redirect('/')
         })
     })
+}
+
+exports.current_user = function (req, res, next) {
+    if (!req.cookies.u_id) {
+        u_id = uuid.v1()
+        console.log('---- setting cookie u_id: %s', u_id)
+        res.cookie('u_id', u_id)
+    } else {
+        console.log('---- current cookie u_id: %s', req.cookies.u_id)
+    }
+
+    next()
 }
