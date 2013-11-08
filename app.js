@@ -3,7 +3,6 @@ var express = require('express')
     , less_middleware = require('less-middleware')
     , path = require('path')
     , app = express()
-    , port = 9023
 
 app.set('view engine', 'jade')
 app.set('views', path.join(__dirname, 'views'))
@@ -42,8 +41,9 @@ app.get('/destroy/:id', routes.destroy)
 app.get('/edit/:id', routes.edit)
 app.post('/update/:id', routes.update)
 
-exports.start = function () {
-    app.listen(port, function () {
-        console.log('** Listening on %s in %s mode', app.address, app.settings.env )
+exports.start = function (port) {
+    app.listen(port, function (err) {
+        if (err) console.log(err)
+        console.log('** Listening on %s in %s mode', port, app.settings.env )
     })
 }
