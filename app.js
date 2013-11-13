@@ -39,6 +39,7 @@ app.configure('production', function () {
 
 // bind routes
 app.get('/', routes.index)
+app.get('/all', routes.all)
 app.post('/create', routes.create)
 app.get('/destroy/:id', routes.destroy)
 app.get('/edit/:id', routes.edit)

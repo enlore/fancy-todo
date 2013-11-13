@@ -75,6 +75,18 @@ exports.update = function (req, res, next) {
     })
 }
 
+exports.all = function (req, res, next) {
+    Todo.find(function (err, todos) {
+        if (err) return next(err)
+        else {
+            console.log(todos.length)
+            res.render('history', {
+                todos: todos
+            })
+        }
+    })
+}
+
 exports.current_user = function (req, res, next) {
     if (!req.cookies.u_id) {
         u_id = uuid.v1()

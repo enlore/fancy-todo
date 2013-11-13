@@ -1,0 +1,7 @@
+extends layouts/base
+block body
+  if todos
+    ul
+      - for todo in todos
+        li
+          | #{todo.content} || #{todo.updated_at}
