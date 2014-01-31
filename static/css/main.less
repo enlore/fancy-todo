@@ -50,3 +50,16 @@ textarea {
     }
 }
 
+#done-todos {
+    padding-left: 0;
+}
+
+.done-todo {
+    color: lighten(#5BC0DE, 45%);
+    background: lighten(#5BC0DE, 17%);
+    padding: 8px;
+    list-style: none;
+    &:nth-child(2n) {
+        background: lighten(#5BC0DE, 15%);
+    }
+}
