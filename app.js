@@ -10,7 +10,7 @@ app.set('view engine', 'jade')
 app.set('views', path.join(__dirname, 'views'))
 
 // middleware
-app.use(express.logger())
+app.use(express.logger('dev'))
 app.use(less_middleware({
     src: path.join(__dirname, 'static'),
     compress: true,
@@ -44,6 +44,8 @@ app.post('/create', routes.create)
 app.get('/destroy/:id', routes.destroy)
 app.get('/edit/:id', routes.edit)
 app.post('/update/:id', routes.update)
+
+app.get('/todos/done', routes.done)
 
 exports.start = function (port) {
     app.listen(port, function (err) {

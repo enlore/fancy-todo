@@ -13,6 +13,15 @@ exports.index = function(req, res, next) {
         })
     }
 
+    exports.done = function (req, res, next) {
+        Todo.find({u_id: req.cookies.u_id, done: true}).
+            sort('-updated_at').
+            exec(function (err, todos, count) {
+                if (err) next(err) 
+                res.send({done_todos: todos})
+            })
+    }
+
 exports.create = function (req, res, next) {
     new Todo({
         u_id        : req.cookies.u_id,

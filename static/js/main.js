@@ -1,4 +1,15 @@
 $(document).ready(function () {
+    var $done_todos = $('#done-todos')
+
+    $.get('/todos/done', function (data, status, jqXHR) {
+        for (var i = 0; i < data.done_todos.length; i++) {
+            $done_li = $('<li />').addClass('done-todo')
+                .append(data.done_todos[i].content)
+
+            $done_todos.append($done_li)
+        }
+    })
+
     var todo_form = $('#todo-form')
         , new_todo = $('#todo-input')
         , keys = []
