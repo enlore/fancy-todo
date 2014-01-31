@@ -22,7 +22,7 @@ block body
             -for item in todos
               li
                 if item._id == current
-                  form(id="todo-form", class="form", action="/create", method="post", class="todo-form")
+                  form(id="todo-form", class="form", action="/update/#{current}", method="post", class="todo-form")
                     .form-group(id="todo-input")
                       textarea(class="form-control", type="text", name="content") #{item.content}
                     .form-group
