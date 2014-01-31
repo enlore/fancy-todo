@@ -4,8 +4,7 @@ var mongoose    = require('mongoose')
     , uuid      = require('node-uuid')
 
 exports.index = function(req, res, next) {
-    // find all todos by user id
-    Todo.find({u_id: req.cookies.u_id}).
+    Todo.find({u_id: req.cookies.u_id, done: false}).
         sort('-updated_at').
         exec(function (err, todos, count) {
             if (err) next(err)
@@ -34,12 +33,10 @@ exports.destroy = function (req, res, next) {
             res.redirect('/')
         }
 
-        todo.remove(function (err, todo) {
-            if (err) return next(err)
-            else {
-                console.log('---- INFO: destroyed id: %s', todo._id)
-                res.redirect('/')
-            }
+        todo.done = true
+        todo.save(function (err) {
+            if (err) throw err 
+            res.redirect('/')
         })
     })
 }
